@@ -23,7 +23,7 @@ func resourceAciFunctionNode() *schema.Resource {
 		SchemaVersion: 1,
 
 		Schema: AppendBaseAttrSchema(map[string]*schema.Schema{
-			"l4-l7_service_graph_template_dn": &schema.Schema{
+			"l4_l7_service_graph_template_dn": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
@@ -135,10 +135,10 @@ func setFunctionNodeAttributes(vnsAbsNode *models.FunctionNode, d *schema.Resour
 	dn := d.Id()
 	d.SetId(vnsAbsNode.DistinguishedName)
 	d.Set("description", vnsAbsNode.Description)
-	// d.Set("l4-l7_service_graph_template_dn", GetParentDn(vnsAbsNode.DistinguishedName))
+	// d.Set("l4_l7_service_graph_template_dn", GetParentDn(vnsAbsNode.DistinguishedName))
 
 	if dn != vnsAbsNode.DistinguishedName {
-		d.Set("l4-l7_service_graph_template_dn", "")
+		d.Set("l4_l7_service_graph_template_dn", "")
 	}
 
 	vnsAbsNodeMap, _ := vnsAbsNode.ToMap()
@@ -181,8 +181,8 @@ func resourceAciFunctionNodeCreate(d *schema.ResourceData, m interface{}) error 
 
 	name := d.Get("name").(string)
 
-	l4l7ServiceGraphTemplateDn := d.Get("l4-l7_service_graph_template_dn").(string)
-	//l4l7ServiceGraphTemplateDn := d.Get("l4-l7_service_graph_template_dn").(string)
+	l4l7ServiceGraphTemplateDn := d.Get("l4_l7_service_graph_template_dn").(string)
+	//l4l7ServiceGraphTemplateDn := d.Get("l4_l7_service_graph_template_dn").(string)
 
 	vnsAbsNodeAttr := models.FunctionNodeAttributes{}
 	if Annotation, ok := d.GetOk("annotation"); ok {
@@ -294,7 +294,7 @@ func resourceAciFunctionNodeUpdate(d *schema.ResourceData, m interface{}) error 
 
 	name := d.Get("name").(string)
 
-	l4l7ServiceGraphTemplateDn := d.Get("l4-l7_service_graph_template_dn").(string)
+	l4l7ServiceGraphTemplateDn := d.Get("l4_l7_service_graph_template_dn").(string)
 
 	vnsAbsNodeAttr := models.FunctionNodeAttributes{}
 	if Annotation, ok := d.GetOk("annotation"); ok {

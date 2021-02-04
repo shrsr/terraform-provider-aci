@@ -2,6 +2,7 @@ package aci
 
 import (
 	"fmt"
+
 	"github.com/ciscoecosystem/aci-go-client/client"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
@@ -14,7 +15,7 @@ func dataSourceAciFunctionNode() *schema.Resource {
 		SchemaVersion: 1,
 
 		Schema: AppendBaseAttrSchema(map[string]*schema.Schema{
-			"l4-l7_service_graph_template_dn": &schema.Schema{
+			"l4_l7_service_graph_template_dn": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
@@ -87,7 +88,7 @@ func dataSourceAciFunctionNodeRead(d *schema.ResourceData, m interface{}) error 
 	name := d.Get("name").(string)
 
 	rn := fmt.Sprintf("AbsNode-%s", name)
-	l4l7ServiceGraphTemplateDn := d.Get("l4-l7_service_graph_template_dn").(string)
+	l4l7ServiceGraphTemplateDn := d.Get("l4_l7_service_graph_template_dn").(string)
 
 	dn := fmt.Sprintf("%s/%s", l4l7ServiceGraphTemplateDn, rn)
 

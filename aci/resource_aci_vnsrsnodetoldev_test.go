@@ -12,7 +12,6 @@ import (
 
 func TestAccAciRelationfromaAbsNodetoanLDev_Basic(t *testing.T) {
 	var relationfroma_abs_nodetoan_l_dev models.RelationfromaAbsNodetoanLDev
-	description := "relationfroma_abs_nodetoan_l_dev created while acceptance testing"
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
@@ -20,16 +19,11 @@ func TestAccAciRelationfromaAbsNodetoanLDev_Basic(t *testing.T) {
 		CheckDestroy: testAccCheckAciRelationfromaAbsNodetoanLDevDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCheckAciRelationfromaAbsNodetoanLDevConfig_basic(description),
+				Config: testAccCheckAciRelationfromaAbsNodetoanLDevConfig_basic(),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckAciRelationfromaAbsNodetoanLDevExists("aci_relationfroma_abs_nodetoan_l_dev.foorelationfroma_abs_nodetoan_l_dev", &relationfroma_abs_nodetoan_l_dev),
-					testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(description, &relationfroma_abs_nodetoan_l_dev),
+					testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(&relationfroma_abs_nodetoan_l_dev),
 				),
-			},
-			{
-				ResourceName:      "aci_relationfroma_abs_nodetoan_l_dev",
-				ImportState:       true,
-				ImportStateVerify: true,
 			},
 		},
 	})
@@ -37,7 +31,6 @@ func TestAccAciRelationfromaAbsNodetoanLDev_Basic(t *testing.T) {
 
 func TestAccAciRelationfromaAbsNodetoanLDev_update(t *testing.T) {
 	var relationfroma_abs_nodetoan_l_dev models.RelationfromaAbsNodetoanLDev
-	description := "relationfroma_abs_nodetoan_l_dev created while acceptance testing"
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
@@ -45,33 +38,32 @@ func TestAccAciRelationfromaAbsNodetoanLDev_update(t *testing.T) {
 		CheckDestroy: testAccCheckAciRelationfromaAbsNodetoanLDevDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCheckAciRelationfromaAbsNodetoanLDevConfig_basic(description),
+				Config: testAccCheckAciRelationfromaAbsNodetoanLDevConfig_basic(),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckAciRelationfromaAbsNodetoanLDevExists("aci_relationfroma_abs_nodetoan_l_dev.foorelationfroma_abs_nodetoan_l_dev", &relationfroma_abs_nodetoan_l_dev),
-					testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(description, &relationfroma_abs_nodetoan_l_dev),
+					testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(&relationfroma_abs_nodetoan_l_dev),
 				),
 			},
 			{
-				Config: testAccCheckAciRelationfromaAbsNodetoanLDevConfig_basic(description),
+				Config: testAccCheckAciRelationfromaAbsNodetoanLDevConfig_basic(),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckAciRelationfromaAbsNodetoanLDevExists("aci_relationfroma_abs_nodetoan_l_dev.foorelationfroma_abs_nodetoan_l_dev", &relationfroma_abs_nodetoan_l_dev),
-					testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(description, &relationfroma_abs_nodetoan_l_dev),
+					testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(&relationfroma_abs_nodetoan_l_dev),
 				),
 			},
 		},
 	})
 }
 
-func testAccCheckAciRelationfromaAbsNodetoanLDevConfig_basic(description string) string {
+func testAccCheckAciRelationfromaAbsNodetoanLDevConfig_basic() string {
 	return fmt.Sprintf(`
 
 	resource "aci_relationfroma_abs_nodetoan_l_dev" "foorelationfroma_abs_nodetoan_l_dev" {
-		  function_node_dn  = "${aci_function_node.example.id}"
-		description = "%s"
+		  function_node_dn  = "uni/tn-check_tenantnk/AbsGraph-second/AbsNode-N1"
 		  annotation  = "example"
-		  t_dn  = "example"
+		  t_dn  = "uni/tn-check_tenantnk/lDevVip-second"
 		}
-	`, description)
+	`)
 }
 
 func testAccCheckAciRelationfromaAbsNodetoanLDevExists(name string, relationfroma_abs_nodetoan_l_dev *models.RelationfromaAbsNodetoanLDev) resource.TestCheckFunc {
@@ -122,18 +114,14 @@ func testAccCheckAciRelationfromaAbsNodetoanLDevDestroy(s *terraform.State) erro
 	return nil
 }
 
-func testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(description string, relationfroma_abs_nodetoan_l_dev *models.RelationfromaAbsNodetoanLDev) resource.TestCheckFunc {
+func testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(relationfroma_abs_nodetoan_l_dev *models.RelationfromaAbsNodetoanLDev) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-
-		if description != relationfroma_abs_nodetoan_l_dev.Description {
-			return fmt.Errorf("Bad relationfroma_abs_nodetoan_l_dev Description %s", relationfroma_abs_nodetoan_l_dev.Description)
-		}
 
 		if "example" != relationfroma_abs_nodetoan_l_dev.Annotation {
 			return fmt.Errorf("Bad relationfroma_abs_nodetoan_l_dev annotation %s", relationfroma_abs_nodetoan_l_dev.Annotation)
 		}
 
-		if "example" != relationfroma_abs_nodetoan_l_dev.TDn {
+		if "uni/tn-check_tenantnk/lDevVip-second" != relationfroma_abs_nodetoan_l_dev.TDn {
 			return fmt.Errorf("Bad relationfroma_abs_nodetoan_l_dev t_dn %s", relationfroma_abs_nodetoan_l_dev.TDn)
 		}
 

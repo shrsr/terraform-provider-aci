@@ -22,7 +22,7 @@ func resourceAciRelationfromaAbsNodetoanLDev() *schema.Resource {
 
 		SchemaVersion: 1,
 
-		Schema: AppendBaseAttrSchema(map[string]*schema.Schema{
+		Schema: map[string]*schema.Schema{
 			"function_node_dn": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
@@ -39,7 +39,7 @@ func resourceAciRelationfromaAbsNodetoanLDev() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
-		}),
+		},
 	}
 }
 func getRemoteRelationfromaAbsNodetoanLDev(client *client.Client, dn string) (*models.RelationfromaAbsNodetoanLDev, error) {
@@ -60,7 +60,6 @@ func getRemoteRelationfromaAbsNodetoanLDev(client *client.Client, dn string) (*m
 func setRelationfromaAbsNodetoanLDevAttributes(vnsRsNodeToLDev *models.RelationfromaAbsNodetoanLDev, d *schema.ResourceData) *schema.ResourceData {
 	dn := d.Id()
 	d.SetId(vnsRsNodeToLDev.DistinguishedName)
-	d.Set("description", vnsRsNodeToLDev.Description)
 
 	if dn != vnsRsNodeToLDev.DistinguishedName {
 		d.Set("function_node_dn", "")
@@ -93,7 +92,6 @@ func resourceAciRelationfromaAbsNodetoanLDevImport(d *schema.ResourceData, m int
 func resourceAciRelationfromaAbsNodetoanLDevCreate(d *schema.ResourceData, m interface{}) error {
 	log.Printf("[DEBUG] RelationfromaAbsNodetoanLDev: Beginning Creation")
 	aciClient := m.(*client.Client)
-	desc := d.Get("description").(string)
 	FunctionNodeDn := d.Get("function_node_dn").(string)
 
 	vnsRsNodeToLDevAttr := models.RelationfromaAbsNodetoanLDevAttributes{}
@@ -103,7 +101,7 @@ func resourceAciRelationfromaAbsNodetoanLDevCreate(d *schema.ResourceData, m int
 	if TDn, ok := d.GetOk("t_dn"); ok {
 		vnsRsNodeToLDevAttr.TDn = TDn.(string)
 	}
-	vnsRsNodeToLDev := models.NewRelationfromaAbsNodetoanLDev(fmt.Sprintf("rsNodeToLDev"), FunctionNodeDn, desc, vnsRsNodeToLDevAttr)
+	vnsRsNodeToLDev := models.NewRelationfromaAbsNodetoanLDev(fmt.Sprintf("rsNodeToLDev"), FunctionNodeDn, vnsRsNodeToLDevAttr)
 
 	err := aciClient.Save(vnsRsNodeToLDev)
 	if err != nil {
@@ -122,8 +120,6 @@ func resourceAciRelationfromaAbsNodetoanLDevUpdate(d *schema.ResourceData, m int
 	log.Printf("[DEBUG] RelationfromaAbsNodetoanLDev: Beginning Update")
 
 	aciClient := m.(*client.Client)
-	desc := d.Get("description").(string)
-
 	FunctionNodeDn := d.Get("function_node_dn").(string)
 
 	vnsRsNodeToLDevAttr := models.RelationfromaAbsNodetoanLDevAttributes{}
@@ -133,7 +129,7 @@ func resourceAciRelationfromaAbsNodetoanLDevUpdate(d *schema.ResourceData, m int
 	if TDn, ok := d.GetOk("t_dn"); ok {
 		vnsRsNodeToLDevAttr.TDn = TDn.(string)
 	}
-	vnsRsNodeToLDev := models.NewRelationfromaAbsNodetoanLDev(fmt.Sprintf("rsNodeToLDev"), FunctionNodeDn, desc, vnsRsNodeToLDevAttr)
+	vnsRsNodeToLDev := models.NewRelationfromaAbsNodetoanLDev(fmt.Sprintf("rsNodeToLDev"), FunctionNodeDn, vnsRsNodeToLDevAttr)
 
 	vnsRsNodeToLDev.Status = "modified"
 

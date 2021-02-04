@@ -58,9 +58,13 @@ func getRemoteRelationfromaAbsNodetoanLDev(client *client.Client, dn string) (*m
 }
 
 func setRelationfromaAbsNodetoanLDevAttributes(vnsRsNodeToLDev *models.RelationfromaAbsNodetoanLDev, d *schema.ResourceData) *schema.ResourceData {
+	dn := d.Id()
 	d.SetId(vnsRsNodeToLDev.DistinguishedName)
 	d.Set("description", vnsRsNodeToLDev.Description)
-	d.Set("function_node_dn", GetParentDn(vnsRsNodeToLDev.DistinguishedName))
+
+	if dn != vnsRsNodeToLDev.DistinguishedName {
+		d.Set("function_node_dn", "")
+	}
 	vnsRsNodeToLDevMap, _ := vnsRsNodeToLDev.ToMap()
 
 	d.Set("annotation", vnsRsNodeToLDevMap["annotation"])

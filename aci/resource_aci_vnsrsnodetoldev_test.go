@@ -6,20 +6,16 @@ import (
 
 	"github.com/ciscoecosystem/aci-go-client/client"
 	"github.com/ciscoecosystem/aci-go-client/models"
-	"github.com/hashicorp/terraform/helper/resource"
-	"github.com/hashicorp/terraform/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 )
-
-
-
-
 
 func TestAccAciRelationfromaAbsNodetoanLDev_Basic(t *testing.T) {
 	var relationfroma_abs_nodetoan_l_dev models.RelationfromaAbsNodetoanLDev
 	description := "relationfroma_abs_nodetoan_l_dev created while acceptance testing"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:	  func(){ testAccPreCheck(t) },
+		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckAciRelationfromaAbsNodetoanLDevDestroy,
 		Steps: []resource.TestStep{
@@ -44,7 +40,7 @@ func TestAccAciRelationfromaAbsNodetoanLDev_update(t *testing.T) {
 	description := "relationfroma_abs_nodetoan_l_dev created while acceptance testing"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck: func() { testAccPreCheck(t)},
+		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckAciRelationfromaAbsNodetoanLDevDestroy,
 		Steps: []resource.TestStep{
@@ -110,15 +106,15 @@ func testAccCheckAciRelationfromaAbsNodetoanLDevDestroy(s *terraform.State) erro
 	client := testAccProvider.Meta().(*client.Client)
 
 	for _, rs := range s.RootModule().Resources {
-		
-		 if rs.Type == "aci_relationfroma_abs_nodetoan_l_dev" {
-			cont,err := client.Get(rs.Primary.ID)
+
+		if rs.Type == "aci_relationfroma_abs_nodetoan_l_dev" {
+			cont, err := client.Get(rs.Primary.ID)
 			relationfroma_abs_nodetoan_l_dev := models.RelationfromaAbsNodetoanLDevFromContainer(cont)
 			if err == nil {
-				return fmt.Errorf("Relation from a AbsNode to an LDev %s Still exists",relationfroma_abs_nodetoan_l_dev.DistinguishedName)
+				return fmt.Errorf("Relation from a AbsNode to an LDev %s Still exists", relationfroma_abs_nodetoan_l_dev.DistinguishedName)
 			}
 
-		}else{
+		} else {
 			continue
 		}
 	}
@@ -126,27 +122,21 @@ func testAccCheckAciRelationfromaAbsNodetoanLDevDestroy(s *terraform.State) erro
 	return nil
 }
 
-func testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(description string, relationfroma_abs_nodetoan_l_dev  *models.RelationfromaAbsNodetoanLDev) resource.TestCheckFunc {
+func testAccCheckAciRelationfromaAbsNodetoanLDevAttributes(description string, relationfroma_abs_nodetoan_l_dev *models.RelationfromaAbsNodetoanLDev) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
 		if description != relationfroma_abs_nodetoan_l_dev.Description {
 			return fmt.Errorf("Bad relationfroma_abs_nodetoan_l_dev Description %s", relationfroma_abs_nodetoan_l_dev.Description)
 		}
-		
 
-	
-    
 		if "example" != relationfroma_abs_nodetoan_l_dev.Annotation {
 			return fmt.Errorf("Bad relationfroma_abs_nodetoan_l_dev annotation %s", relationfroma_abs_nodetoan_l_dev.Annotation)
 		}
-	
-    
+
 		if "example" != relationfroma_abs_nodetoan_l_dev.TDn {
 			return fmt.Errorf("Bad relationfroma_abs_nodetoan_l_dev t_dn %s", relationfroma_abs_nodetoan_l_dev.TDn)
 		}
-	
-    
 
-	return nil
+		return nil
 	}
 }
